@@ -35,10 +35,10 @@ def git_repo_updated(res, d):
 
     # NOTE: For some reason adding the ^ character to match at the beginning of the line breaks this.
     # NOTE: For some other reason, "current branch" pattern does not match on Linux, unless multiline is disabled.
-    if re.compile("Current branch .* is up to date\.").search(stdout) or re.compile("Already up-to-date\.").search(stdout, re.MULTILINE):
+    if re.compile(r"Current branch .* is up to date\.").search(stdout) or re.compile(r"Already up[- ]to[- ]date\.", re.MULTILINE).search(stdout):
         status = cTxtBoldGreen + "(already up-to-date)"
     # NOTE: For some other reason, adding re.MULTILINE to search prevents this from working.
-    elif re.compile("[cC]annot pull with rebase: You have unstaged changes\.").search(stderr):
+    elif re.compile(r"[cC]annot pull with rebase: You have unstaged changes\.").search(stderr):
         status = cTxtBoldRed + "(cannot pull, please stash changes first)"
     elif "You are not currently on a branch." in stderr:
         status = cTxtBoldRed + "(cannot pull, HEAD detached)"
